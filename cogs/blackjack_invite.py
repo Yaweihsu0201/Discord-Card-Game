@@ -9,10 +9,10 @@ from blackjack.invite_model import CardBet, BlackjackInviteState
 db = DatabaseManager("game.db")
 
 class BlackjackInviteView(discord.ui.View):
-    def __init__(self, inviter: discord.Member, invitee: discord.Member):
+    def __init__(self, invite: BlackjackInviteState):
         super().__init__(timeout=60)
-        self.inviter = inviter
-        self.invitee = invitee
+        self.inviter = invite.inviter
+        self.invitee = invite.invitee
         self.message = None
 
     async def interaction_check(self, interaction: discord.Interaction):
@@ -92,17 +92,17 @@ class BlackjackInviteCog(commands.Cog):
                 ephemeral=True
             )
         inviter_bet = CardBet(
-            owner_id=interaction.user.id,
+            owner=interaction.user,
             card_name=card['name'],
             card_rank=card['rank']
         )
         
         invite = BlackjackInviteState(
-            inviter_id=interaction.user.id,
-            invitee_id=opponent.id,
+            inviter=interaction.user,
+            invitee=opponent,
             inviter_bet=inviter_bet
         )
-        print(invite.inviter_id,invite.inviter_bet,invite.invitee_id)
+       
         view = BlackjackInviteView(invite)
 
         await interaction.response.send_message(
