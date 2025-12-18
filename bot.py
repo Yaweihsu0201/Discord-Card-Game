@@ -8,12 +8,16 @@ from utils.show_inventory import create_inventory_image
 import os
 from dotenv import load_dotenv
 
+from keep_alive import keep_alive
+
 load_dotenv()
 
 db = DatabaseManager("game.db")
 
 # IMPORTANT: Reset this token on the Discord Developer Portal!
 TOKEN = os.getenv("DISCORD_TOKEN")
+
+keep_alive()
 
 intents = discord.Intents.default()
 intents.message_content = True
