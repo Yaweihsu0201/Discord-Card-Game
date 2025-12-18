@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import aiohttp
 import asyncio
 from utils.card import create_ai_card
 from utils.database import DatabaseManager
@@ -17,7 +16,7 @@ db = DatabaseManager("game.db")
 # IMPORTANT: Reset this token on the Discord Developer Portal!
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-keep_alive()
+#keep_alive()
 
 intents = discord.Intents.default()
 intents.message_content = True
