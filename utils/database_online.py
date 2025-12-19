@@ -81,29 +81,36 @@ class DatabaseManager:
 
     def check_and_update_cooldown(self, user_id):
         user_id = str(user_id)
-        now = datetime.utcnow()
-        one_day_ago = now - timedelta(hours=24)
-
+    
+        # 計算 24 小時內抽卡次數
         self.cursor.execute("""
-            SELECT COUNT(*) FROM inventory
-            WHERE user_id = %s AND timestamp > %s;
-        """, (user_id, one_day_ago))
-
+            SELECT COUNT(*)
+            FROM inventory
+            WHERE user_id = %s
+              AND timestamp > NOW() - INTERVAL '24 hours';
+        """, (user_id,))
+    
         pull_count = self.cursor.fetchone()[0]
-
+    
         if pull_count >= 5:
             self.cursor.execute("""
-                SELECT timestamp FROM inventory
-                WHERE user_id = %s AND timestamp > %s
+                SELECT timestamp
+                FROM inventory
+                WHERE user_id = %s
+                  AND timestamp > NOW() - INTERVAL '24 hours'
                 ORDER BY timestamp ASC
                 LIMIT 1;
-            """, (user_id, one_day_ago))
-
+            """, (user_id,))
+    
             oldest_pull_time = self.cursor.fetchone()[0]
-            time_remaining = (oldest_pull_time + timedelta(hours=24)) - now
+    
+            # PostgreSQL 回來的是 datetime（aware）
+            time_remaining = (oldest_pull_time + timedelta(hours=24)) - datetime.now(oldest_pull_time.tzinfo)
+    
             return False, time_remaining
-
+    
         return True, None
+
 
     def get_card_by_name(self, user_id, card_name):
         query = """
