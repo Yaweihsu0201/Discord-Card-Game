@@ -35,6 +35,9 @@ async def on_message(message):
 
     # ⭐ 一定要加這行，否則 commands / cogs 會失效
     await bot.process_commands(message)
+    if message.content.startswith("!hi"):
+        await message.channel.send("hello")
+        return
 
     if message.content.startswith("!pull"):
         user_name = message.author.display_name
