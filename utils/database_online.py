@@ -1,6 +1,6 @@
 import os
 import psycopg2
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -82,34 +82,31 @@ class DatabaseManager:
     def check_and_update_cooldown(self, user_id):
         user_id = str(user_id)
     
-        # 計算 24 小時內抽卡次數
+        # 現在時間（UTC）
+        now = datetime.now(timezone.utc)
+    
+        # 今天 UTC 的 00:00
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    
+        # 明天 UTC 的 00:00（冷卻結束時間）
+        tomorrow_start = today_start + timedelta(days=1)
+    
+        # 計算「今天」已抽卡次數
         self.cursor.execute("""
             SELECT COUNT(*)
             FROM inventory
             WHERE user_id = %s
-              AND timestamp > NOW() - INTERVAL '24 hours';
-        """, (user_id,))
+              AND timestamp >= %s
+              AND timestamp < %s;
+        """, (user_id, today_start, tomorrow_start))
     
         pull_count = self.cursor.fetchone()[0]
     
         if pull_count >= 5:
-            self.cursor.execute("""
-                SELECT timestamp
-                FROM inventory
-                WHERE user_id = %s
-                  AND timestamp > NOW() - INTERVAL '24 hours'
-                ORDER BY timestamp ASC
-                LIMIT 1;
-            """, (user_id,))
-    
-            oldest_pull_time = self.cursor.fetchone()[0]
-    
-            # PostgreSQL 回來的是 datetime（aware）
-            time_remaining = (oldest_pull_time + timedelta(hours=24)) - datetime.now(oldest_pull_time.tzinfo)
-    
+            time_remaining = tomorrow_start - now
             return False, time_remaining
-    
-        return True, None
+
+    return True, None
 
 
     def get_card_by_name(self, user_id, card_name):
