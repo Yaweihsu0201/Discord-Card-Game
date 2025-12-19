@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from utils.card import create_ai_card
-from utils.database import DatabaseManager
+from utils.database_online import DatabaseManager
 from utils.show_inventory import create_inventory_image
 import os
 from dotenv import load_dotenv
@@ -11,7 +11,7 @@ from keep_alive import keep_alive
 
 load_dotenv()
 
-db = DatabaseManager("game.db")
+db = DatabaseManager()
 
 # IMPORTANT: Reset this token on the Discord Developer Portal!
 TOKEN = os.getenv("DISCORD_TOKEN")

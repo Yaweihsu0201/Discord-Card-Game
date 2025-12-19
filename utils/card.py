@@ -1,9 +1,9 @@
 import discord
 from datetime import datetime
 import random
-from utils.database import DatabaseManager  # Importing your class
+from utils.database_online import DatabaseManager  # Importing your class
 
-db = DatabaseManager("game.db")
+db = DatabaseManager()
 
 
 def pull_card():
