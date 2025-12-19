@@ -47,7 +47,7 @@ async def on_message(message):
             my_embed = create_ai_card(user_name,user_id)
             await message.channel.send(embed=my_embed)
         else:
-            await message.channel.send("You have reached your daily limited, please wait")
+            await message.channel.send("You have reached your daily limited, time remaining:"+str(time_remained))
         return
     if message.content.startswith("!list"):
         inventory_data = db.get_user_inventory(message.author.id)
