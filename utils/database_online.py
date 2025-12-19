@@ -106,7 +106,7 @@ class DatabaseManager:
             time_remaining = tomorrow_start - now
             return False, time_remaining
 
-    return True, None
+        return True, None
 
 
     def get_card_by_name(self, user_id, card_name):
