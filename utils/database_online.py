@@ -213,7 +213,19 @@ class DatabaseManager:
             "image_url": row[3],
             "description": row[4],
         }
-
+    def get_cards_by_card_id(self, user_id, card_id):
+        self.cursor.execute("""
+            SELECT c.card_id, c.name, c.rarity AS rank
+            FROM inventory i
+            JOIN cards_catalog c ON i.card_id = c.card_id
+            WHERE i.user_id = ? AND i.card_id = ?
+        """, (str(user_id), card_id))
+        
+        rows = self.cursor.fetchall()
+        return [
+            {"card_id": r[0], "name": r[1], "rank": r[2]}
+            for r in rows
+        ]
     # =========================
     # CLEANUP
     # =========================
