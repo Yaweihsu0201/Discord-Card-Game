@@ -111,8 +111,6 @@ async def on_message(message):
 
         # 1️⃣ Get the card
         owned_cards = db.get_cards_by_card_id(user_id, card_id)
-
-        await message.channel.send("cards accessed")
         
         if not owned_cards or len(owned_cards) < amount:
             await message.reply(
@@ -124,7 +122,7 @@ async def on_message(message):
         card = owned_cards[0]
         rarity = card["rank"]
         card_name = card["name"]
-
+        await message.channel.send("card_name"+"rarity")
         # 2️⃣ Determine sell price
         sell_price = SELL_PRICE_BY_RARITY.get(rarity)
         if sell_price is None:
