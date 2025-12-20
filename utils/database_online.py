@@ -209,7 +209,7 @@ class DatabaseManager:
         return {
             "card_id": row[0],
             "name": row[1],
-            "ransk": row[2],
+            "rank": row[2],
             "image_url": row[3],
             "description": row[4],
         }
