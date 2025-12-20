@@ -101,11 +101,11 @@ async def on_message(message):
             return
             
         if amount <= 0:
-        await message.reply(
-            "❌ Amount must be greater than 0.",
-            mention_author=False
-        )
-        return
+            await message.reply(
+                "❌ Amount must be greater than 0.",
+                mention_author=False
+            )
+            return
 
         user_id = message.author.id
 
