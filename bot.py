@@ -82,9 +82,9 @@ async def on_message(message):
     if message.content.startswith("!sell"):
         parts = message.content.split()
 
-        if len(parts) != 2:
+        if len(parts) != 3:
             await message.reply(
-                "❌ Usage: `!sell <card_id>`",
+                "❌ Usage: `!sell <card_id> <amount>`",
                 mention_author=False
             )
             return
@@ -92,24 +92,34 @@ async def on_message(message):
         # Parse card_id
         try:
             card_id = int(parts[1])
+            amount = int(parts[2])
         except ValueError:
             await message.reply(
                 "❌ Card ID must be a number.",
                 mention_author=False
             )
             return
+            
+        if amount <= 0:
+        await message.reply(
+            "❌ Amount must be greater than 0.",
+            mention_author=False
+        )
+        return
 
         user_id = message.author.id
 
         # 1️⃣ Get the card
-        card = db.get_card_by_card_id(user_id, card_id)
-        if not card:
+        owned_cards = db.get_card_by_card_id(user_id, card_id)
+        
+        if not owned_cards or len(owned_cards) < amount:
             await message.reply(
-                "❌ You don't own this card.",
+                f"❌ You don't own **{amount}** copies of this card.",
                 mention_author=False
             )
             return
-
+        
+        card = owned_cards[0]
         rarity = card["rank"]
         card_name = card["name"]
 
@@ -121,9 +131,10 @@ async def on_message(message):
                 mention_author=False
             )
             return
-
+        total_price = sell_price * amount
         # 3️⃣ Remove card
-        removed = db.remove_from_inventory_by_card_id(user_id, card_id)
+        for _ in range(amount):
+            db.remove_from_inventory_by_card_id(user_id, card_id)
         if not removed:
             await message.reply(
                 "❌ Failed to remove card (try again).",
@@ -136,7 +147,7 @@ async def on_message(message):
 
         # 5️⃣ Confirm
         await message.reply(
-            f"💸 Sold **{card_name}** ({rarity}) for **${sell_price}**!",
+            f"💸 Sold **{amount}× {card_name}** ({rarity}) for **${total_price}**!",
             mention_author=False
         )
 
