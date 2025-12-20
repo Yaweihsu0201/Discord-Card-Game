@@ -111,14 +111,16 @@ async def on_message(message):
 
         # 1️⃣ Get the card
         owned_cards = db.get_cards_by_card_id(user_id, card_id)
-        print(owned_cards)
+
+        print("cards accessed")
+        
         if not owned_cards or len(owned_cards) < amount:
             await message.reply(
                 f"❌ You don't own **{amount}** copies of this card.",
                 mention_author=False
             )
             return
-        
+
         card = owned_cards[0]
         rarity = card["rank"]
         card_name = card["name"]
@@ -132,6 +134,7 @@ async def on_message(message):
             )
             return
         total_price = sell_price * amount
+        
         # 3️⃣ Remove card
         for _ in range(amount):
             db.remove_from_inventory_by_card_id(user_id, card_id)
@@ -141,7 +144,7 @@ async def on_message(message):
                 mention_author=False
             )
             return
-
+        print("cards removed")
         # 4️⃣ Add balance
         db.manage_balance(user_id, "add", total_price)
 
