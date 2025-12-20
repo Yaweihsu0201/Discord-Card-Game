@@ -204,6 +204,61 @@ async def on_message(message):
         )
 
         return
+    if message.content.startswith("!help"):
+        embed = discord.Embed(
+            title="📖 Bot Commands Help",
+            description="Here are all available commands",
+            color=0x5865F2
+        )
+
+        embed.add_field(
+            name="🎴 Card / Gacha",
+            value=(
+                "`!daily` → Daily free pull\n"
+                "`!drop` → Pull a card (cost $100)\n"
+                "`!sell <card_id>` → Sell a card"
+            ),
+            inline=False
+        )
+
+        embed.add_field(
+            name="🎒 Inventory",
+            value=(
+                "`!collection` → Show card collection image\n"
+                "`!list` → List all owned cards"
+            ),
+            inline=False
+        )
+
+        embed.add_field(
+            name="💰 Economy",
+            value=(
+                "`!daily` → Limited daily pulls\n"
+                "`!drop` → Spend money to pull"
+            ),
+            inline=False
+        )
+
+        embed.add_field(
+            name="🎮 Games",
+            value=(
+                "`/blackjack` → Play Blackjack (Slash Command)\n"
+                "`/blackjack_invite` → Invite others"
+            ),
+            inline=False
+        )
+
+        embed.add_field(
+            name="🛠 Admin",
+            value="`!add @user amount` → Add money (Admin only)",
+            inline=False
+        )
+
+        embed.set_footer(text="Use commands with ! or /")
+
+        await message.channel.send(embed=embed)
+        return
+
     
 async def main():
     await bot.load_extension("cogs.blackjack_pvp")
