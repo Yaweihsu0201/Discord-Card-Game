@@ -110,7 +110,7 @@ async def on_message(message):
         user_id = message.author.id
 
         # 1️⃣ Get the card
-        owned_cards = db.get_card_by_card_id(user_id, card_id)
+        owned_cards = db.get_cards_by_card_id(user_id, card_id)
         
         if not owned_cards or len(owned_cards) < amount:
             await message.reply(
@@ -143,7 +143,7 @@ async def on_message(message):
             return
 
         # 4️⃣ Add balance
-        db.manage_balance(user_id, "add", sell_price)
+        db.manage_balance(user_id, "add", total_price)
 
         # 5️⃣ Confirm
         await message.reply(
