@@ -112,7 +112,7 @@ async def on_message(message):
         # 1️⃣ Get the card
         owned_cards = db.get_cards_by_card_id(user_id, card_id)
 
-        print("cards accessed")
+        await message.channel.send("cards accessed")
         
         if not owned_cards or len(owned_cards) < amount:
             await message.reply(
@@ -144,7 +144,7 @@ async def on_message(message):
                 mention_author=False
             )
             return
-        print("cards removed")
+        await message.channel.send("cards removed")
         # 4️⃣ Add balance
         db.manage_balance(user_id, "add", total_price)
 
