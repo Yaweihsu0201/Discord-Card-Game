@@ -11,7 +11,7 @@ def sort_card(inventory_data):
     #Sort the list
     sorted_inventory = sorted(
         inventory_data, 
-        key=lambda x: (rarity_order.get(x[1], 99), x[0])
+        key=lambda x: (rarity_order.get(x[2], 99), x[1])
     )
     return sorted_inventory
 
@@ -22,8 +22,8 @@ def create_inventory_image(inventory_data,user_name):
     inventory_data = sort_card(inventory_data)
     for row in inventory_data:
         # row[0] is name, row[1] is rarity, row[2] is image_url
-        details.append([row[0], row[1]])
-        card_urls.append(row[2])
+        details.append([row[1], row[2]])
+        card_urls.append(row[3])
     # 1. Create a blank dark background (e.g., 5 cards wide)
     canvas = Image.new('RGB', (500, 300), (30, 33, 36)) 
     
@@ -45,7 +45,7 @@ def create_inventory_image(inventory_data,user_name):
             y_offset += 130
     names = [item[0] for item in details]
     counts = Counter(names)
-    inventory_string = ", ".join([f"**{name}**: {count}" for name, count in counts.items()])
+    #inventory_string = ", ".join([f"**{name}**: {count}" for name, count in counts.items()])
 
     # 1. Save canvas to a "Buffer" (memory) instead of just a file
     # This avoids hard drive errors and is faster
@@ -59,7 +59,7 @@ def create_inventory_image(inventory_data,user_name):
     # 3. Create the Embed and link it to the attachment
     embed = discord.Embed(
         title=f"✨ {user_name}'s Collection",
-        #description=inventory_string,
+        #description=f"Your balance: {user_balance}",
         color=discord.Color.red(),
     )
     # This MUST match the filename in step 2
@@ -67,3 +67,38 @@ def create_inventory_image(inventory_data,user_name):
     
     # Return both as a pair (tuple)
     return embed, file
+
+def list_inventory(inventory_data,user_name,user_balance,daily_limit):
+        # Initialize your lists
+    details = [] # This will store [name, rarity]
+    inventory_data = sort_card(inventory_data)
+    for row in inventory_data:
+        details.append([row[0],row[1], row[2]])
+    name_to_rarity = {}
+    name_to_card_id = {}
+    for card_id, name, rarity in details:
+        name_to_rarity[name] = rarity
+        name_to_card_id[name] = card_id  # same name → same card_id
+
+    names = [name for _, name, _ in details]
+    card_counts = Counter(names)
+
+    card_lines = [
+        f"**{name_to_rarity[name]}** - **{name}** ×{count} (ID: {name_to_card_id[name]})"
+        for name, count in card_counts.items()
+    ]
+
+    description = (
+        f"💰 **Balance:** ${user_balance}\n"
+        + f"⏳ **Daily remaining:** {daily_limit}\n\n"
+        + "\n".join(card_lines)
+    )
+
+    embed = discord.Embed(
+        title=f"✨ {user_name}'s Inventory",
+        description=description,
+        color=discord.Color.red(),
+    )
+    
+    # Return both as a pair (tuple)
+    return embed
