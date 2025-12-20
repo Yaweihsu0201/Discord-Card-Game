@@ -29,16 +29,55 @@ class DatabaseManager:
                 FOREIGN KEY(card_id) REFERENCES cards_catalog(card_id)
             )
         """)
-        # Table for tracking the 24-hour pull cooldown
+
+        # Table for users info
         self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS cooldowns (
+            CREATE TABLE IF NOT EXISTS users (
                 user_id TEXT PRIMARY KEY,
-                last_pull TEXT
+                balance INTEGER,
+                daily_free INTEGER
             )
         """)
         self.conn.commit()
 
     # --- INVENTORY LOGIC ---
+    def manage_balance(self, user_id, mode, amount):
+        """Use this to manage a user's balance"""
+
+        if mode == "add":
+            self.cursor.execute("""
+                UPDATE users
+                SET balance = balance + ?
+                WHERE user_id = ?;
+            """, (amount, user_id))
+
+        elif mode == "sub":
+            self.cursor.execute("""
+                UPDATE users
+                SET balance = balance - ?
+                WHERE user_id = ?;
+            """, (amount, user_id))
+        else:
+            raise ValueError("Invalid mode. Use 'add' or 'sub'.")
+
+        self.conn.commit()
+
+    def check_balance(self, user_id):
+        """Return user's current balance"""
+
+        self.cursor.execute("""
+            SELECT balance
+            FROM users
+            WHERE user_id = ?;
+        """, (user_id,))
+
+        row = self.cursor.fetchone()
+
+        if row is None:
+            return 0   # user not found → balance = 0
+
+        return row[0]
+
 
     def add_card_to_catalog(self, name, rarity, url, desc):
         """Use this to register new cards into your game."""
