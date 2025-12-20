@@ -215,17 +215,19 @@ class DatabaseManager:
         }
     def get_cards_by_card_id(self, user_id, card_id):
         self.cursor.execute("""
-            SELECT c.card_id, c.name, c.rarity AS rank
+            SELECT c.card_id, c.name, c.rarity
             FROM inventory i
             JOIN cards_catalog c ON i.card_id = c.card_id
-            WHERE i.user_id = ? AND i.card_id = ?
+            WHERE i.user_id = %s
+              AND i.card_id = %s
         """, (str(user_id), card_id))
-        
+    
         rows = self.cursor.fetchall()
         return [
             {"card_id": r[0], "name": r[1], "rank": r[2]}
             for r in rows
         ]
+
     # =========================
     # CLEANUP
     # =========================
