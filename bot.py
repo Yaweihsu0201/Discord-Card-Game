@@ -61,7 +61,7 @@ async def on_message(message):
         else:
             my_embed = create_ai_card(user_name,user_id)
             db.consume_daily_pull(message.author.id)
-            await message.channel.send(f"⏳ Daily remaining: {remaining} times")
+            await message.channel.send(f"⏳ Daily remaining: {remaining-1} times")
             await message.channel.send(embed=my_embed)
             return
 
