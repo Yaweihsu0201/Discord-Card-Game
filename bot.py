@@ -273,20 +273,20 @@ async def on_message(message):
         
         if not cards:
             await message.channel.send("Your inventory is empty!")
-
+        
         sorted_cards = sorted(
             cards,
             key=lambda card: RANK_ORDER.get(card[2], -1),
             reverse=True
         )
-
+        message.channel.send("cards sorted")
         data = {
             "user_id": str(user.id),
             "username": user.display_name,
             "avatar": avatar_url,  
             "cards": normalize_cards(sorted_cards)
         }
-
+        message.channel.send("data prepared")
         upload_cards_json(user.id, data)
         
         # Call your function and unpack the two items
