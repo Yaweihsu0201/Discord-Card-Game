@@ -26,6 +26,12 @@ SELL_PRICE_BY_RARITY = {
     "D": 25,
 }
 
+PACKAGES = {
+    "basic",
+    "exclusive",
+    "premium"
+}
+
 
 #keep_alive()
 
@@ -71,16 +77,37 @@ async def on_message(message):
 
     #drop using money
     if message.content.startswith("!drop"):
+        parts = message.content.split()
+
+        if len(parts) != 2:
+            await message.reply(
+                "❌ Usage: `!drop <package>`\n"
+                "📦 Available packages: `basic`, `exclusive`, `premium`",
+                mention_author=False
+            )
+            return
+    
+        package = parts[1].lower()
+    
+        if package not in PACKAGES:
+            await message.reply(
+                "❌ Invalid package.\n"
+                "📦 Available packages: `basic`, `exclusive`, `premium`",
+                mention_author=False
+            )
+            return
         user_name,user_id = message.author.display_name, message.author.id
         balance = db.check_balance(user_id)
-        if balance < 100:
-            await message.reply("❌ You don't have enough money! (at least 100$)")
-        else:
-            my_embed = create_ai_card(user_name,user_id)
-            db.manage_balance(message.author.id,"sub",100)
-            await message.channel.send(f"💰 Your balance now: {balance-100}$")
-            await message.channel.send(embed=my_embed)
-            return
+
+        if package == "basic":
+            if balance < 100:
+                await message.reply("❌ You don't have enough money! (at least 100$)")
+            else:
+                my_embed = create_ai_card(user_name,user_id,"basic")
+                db.manage_balance(message.author.id,"sub",100)
+                await message.channel.send(f"💰 Your balance now: {balance-100}$")
+                await message.channel.send(embed=my_embed)
+                return
 
     #sell a card
     if message.content.startswith("!sell"):
