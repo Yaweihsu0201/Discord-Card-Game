@@ -69,7 +69,7 @@ async def on_message(message):
             await message.reply("❌ No daily pulls left!")
             return
         else:
-            my_embed = create_ai_card(user_name,user_id)
+            my_embed = create_ai_card(user_name,user_id,"basic")
             db.consume_daily_pull(message.author.id)
             await message.channel.send(f"⏳ Daily remaining: {remaining-1} times")
             await message.channel.send(embed=my_embed)
@@ -106,6 +106,24 @@ async def on_message(message):
                 my_embed = create_ai_card(user_name,user_id,"basic")
                 db.manage_balance(message.author.id,"sub",100)
                 await message.channel.send(f"💰 Your balance now: {balance-100}$")
+                await message.channel.send(embed=my_embed)
+                return
+        if package == "exclusive":
+            if balance < 300:
+                await message.reply("❌ You don't have enough money! (at least 300$)")
+            else:
+                my_embed = create_ai_card(user_name,user_id,"exclusive")
+                db.manage_balance(message.author.id,"sub",300)
+                await message.channel.send(f"💰 Your balance now: {balance-300}$")
+                await message.channel.send(embed=my_embed)
+                return
+        if package == "premium":
+            if balance < 1000:
+                await message.reply("❌ You don't have enough money! (at least 1000$)")
+            else:
+                my_embed = create_ai_card(user_name,user_id,"premium")
+                db.manage_balance(message.author.id,"sub",1000)
+                await message.channel.send(f"💰 Your balance now: {balance-1000}$")
                 await message.channel.send(embed=my_embed)
                 return
 
