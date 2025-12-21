@@ -126,7 +126,7 @@ async def on_message(message):
         card = owned_cards[0]
         rarity = card["rank"]
         card_name = card["name"]
-        await message.channel.send(card_name + " " + rarity)
+
         # 2️⃣ Determine sell price
         sell_price = SELL_PRICE_BY_RARITY.get(rarity)
         
@@ -137,17 +137,11 @@ async def on_message(message):
             )
             return
         total_price = sell_price * amount
-        await message.channel.send(f"{total_price}")
+
         # 3️⃣ Remove card
         for _ in range(amount):
             db.remove_from_inventory_by_card_id(user_id, card_id)
-        if not removed:
-            await message.reply(
-                "❌ Failed to remove card (try again).",
-                mention_author=False
-            )
-            return
-        await message.channel.send("cards removed")
+
         # 4️⃣ Add balance
         db.manage_balance(user_id, "add", total_price)
 
