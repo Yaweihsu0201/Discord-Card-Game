@@ -272,7 +272,7 @@ async def on_message(message):
         avatar_url = user.display_avatar.url
         
         if not cards:
-            return await message.channel.send("Your inventory is empty!")
+            await message.channel.send("Your inventory is empty!")
 
         sorted_cards = sorted(
             cards,
@@ -294,7 +294,7 @@ async def on_message(message):
         
         # You must send the file and embed together
         await message.channel.send(
-            f"🎴 {user.display_name} 的卡牌展示頁：\n"
+            f"🎴 {user.display_name}'s collection：\n"
             f"<https://yaweihsu0201.github.io/card-viewer/?uid={user.id}>"
         )
         await message.channel.send(embed=embed, file=file)
