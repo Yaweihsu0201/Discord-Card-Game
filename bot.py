@@ -8,8 +8,6 @@ import os
 from upload_cards import upload_cards_json
 from dotenv import load_dotenv
 
-from keep_alive import keep_alive
-
 load_dotenv()
 
 db = DatabaseManager()
