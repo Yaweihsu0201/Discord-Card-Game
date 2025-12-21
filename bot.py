@@ -5,6 +5,7 @@ from utils.card import create_ai_card
 from utils.database_online import DatabaseManager
 from utils.show_inventory import create_inventory_image, list_inventory
 import os
+from upload_cards import upload_cards_json
 from dotenv import load_dotenv
 
 from keep_alive import keep_alive
@@ -31,6 +32,24 @@ PACKAGES = {
     "exclusive",
     "premium"
 }
+RANK_ORDER = {
+    "S": 4,
+    "A": 3,
+    "B": 2,
+    "C": 1,
+    "D": 0
+}
+
+def normalize_cards(card_rows):
+    return [
+        {
+            "id": card_id,
+            "name": name,
+            "rank": rank,
+            "image": url
+        }
+        for card_id, name, rank, url in card_rows
+    ]
 
 
 #keep_alive()
@@ -248,14 +267,36 @@ async def on_message(message):
         )
 
     if message.content.startswith("!collection"):
-        inventory_data = db.get_user_inventory(message.author.id)
-        if not inventory_data:
+        user = message.author
+        cards = db.get_user_inventory(user.id)
+        avatar_url = user.display_avatar.url
+        
+        if not cards:
             return await message.channel.send("Your inventory is empty!")
 
+        sorted_cards = sorted(
+            cards,
+            key=lambda card: RANK_ORDER.get(card[2], -1),
+            reverse=True
+        )
+
+        data = {
+            "user_id": str(user.id),
+            "username": user.display_name,
+            "avatar": avatar_url,  
+            "cards": normalize_cards(sorted_cards)
+        }
+
+        upload_cards_json(user.id, data)
+        
         # Call your function and unpack the two items
         embed, file = create_inventory_image(inventory_data,message.author.display_name)
         
         # You must send the file and embed together
+        await message.channel.send(
+            f"🎴 {user.display_name} 的卡牌展示頁：\n"
+            f"<https://yaweihsu0201.github.io/card-viewer/?uid={user.id}>"
+        )
         await message.channel.send(embed=embed, file=file)
     if message.content.startswith("!list"):
         inventory_data = db.get_user_inventory(message.author.id)
