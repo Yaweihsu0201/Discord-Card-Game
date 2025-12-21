@@ -130,6 +130,7 @@ async def on_message(message):
         await message.channel.send(card_name + " " + rarity)
         # 2️⃣ Determine sell price
         sell_price = SELL_PRICE_BY_RARITY.get(rarity)
+        
         if sell_price is None:
             await message.reply(
                 "❌ This card cannot be sold.",
@@ -137,7 +138,7 @@ async def on_message(message):
             )
             return
         total_price = sell_price * amount
-        
+        await message.channel.send(f"{total_price}")
         # 3️⃣ Remove card
         for _ in range(amount):
             db.remove_from_inventory_by_card_id(user_id, card_id)
