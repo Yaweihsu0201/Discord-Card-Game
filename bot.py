@@ -51,8 +51,7 @@ async def on_message(message):
         return
         
     if message.content.startswith("!pull"):
-        await message.reply("Type !daily to claim your daily reward\n
-        Type !drop to drop a card (100$ each time)")
+        await message.reply("Type !daily to claim your daily reward\nType !drop to drop a card (100$ each time)")
         return
             
     #daily drop
