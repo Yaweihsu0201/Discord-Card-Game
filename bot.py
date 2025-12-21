@@ -75,6 +75,57 @@ async def on_message(message):
             await message.channel.send(embed=my_embed)
             return
 
+    if message.content.startswith("!shop"):
+        embed = discord.Embed(
+            title="🛒 MIDV Card Shop",
+            description=(
+                "Choose a package to open using `!drop <package>`\n"
+                "✨ **Featuring the rarest S+ cards in the game**"
+            ),
+            color=0xF1C40F  # gold / premium vibe
+        )
+    
+        embed.add_field(
+            name="📦 Basic Package — $100",
+            value=(
+                "• All cards available\n"
+                "• 🎯 **1%** chance to get the highest tier"
+            ),
+            inline=False
+        )
+    
+        embed.add_field(
+            name="✨ Exclusive Package — $300",
+            value=(
+                "• Only cards with rarity **higher than C**\n"
+                "• 🎯 **5%** chance to get the highest tier"
+            ),
+            inline=False
+        )
+    
+        embed.add_field(
+            name="💎 Premium Package — $1000",
+            value=(
+                "• Only cards with rarity **higher than B**\n"
+                "• 🎯 **20%** chance to get the highest tier"
+            ),
+            inline=False
+        )
+    
+        # 🔥 Add the poster image (hosted URL required)
+        embed.set_image(
+            url="https://ik.imagekit.io/rnomfb5zn/cardgames/shop_banner.png"
+        )
+    
+        embed.set_footer(
+            text="Example: !drop premium • S+ cards are extremely rare"
+        )
+    
+        await message.reply(embed=embed, mention_author=False)
+        return
+
+
+    
     #drop using money
     if message.content.startswith("!drop"):
         parts = message.content.split()
@@ -82,7 +133,7 @@ async def on_message(message):
         if len(parts) != 2:
             await message.reply(
                 "❌ Usage: `!drop <package>`\n"
-                "📦 Available packages: `basic`, `exclusive`, `premium`",
+                "📦 Available packages: 📦`basic`, ✨`exclusive`, 💎`premium`",
                 mention_author=False
             )
             return
@@ -92,7 +143,7 @@ async def on_message(message):
         if package not in PACKAGES:
             await message.reply(
                 "❌ Invalid package.\n"
-                "📦 Available packages: `basic`, `exclusive`, `premium`",
+                "📦 Available packages: 📦`basic`, ✨`exclusive`, 💎`premium`",
                 mention_author=False
             )
             return
