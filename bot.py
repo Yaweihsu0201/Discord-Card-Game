@@ -49,7 +49,12 @@ async def on_message(message):
     if message.content.startswith("!hi"):
         await message.channel.send("hello")
         return
-
+        
+    if message.content.startswith("!pull"):
+        await message.reply("Type !daily to claim your daily reward\n
+        Type !drop to drop a card (100$ each time)")
+        return
+            
     #daily drop
     if message.content.startswith("!daily"):
         user_name = message.author.display_name
