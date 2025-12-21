@@ -288,7 +288,7 @@ async def on_message(message):
         upload_cards_json(user.id, data)
         
         # Call your function and unpack the two items
-        embed, file = create_inventory_image(inventory_data,message.author.display_name)
+        embed, file = create_inventory_image(cards,message.author.display_name)
         
         # You must send the file and embed together
         await message.channel.send(
