@@ -7,9 +7,7 @@ A Discord bot that allows players to play card-based collection game directly in
 ## 🎮 Demo
 
 ### Gameplay Preview
-![demo](docs/demo.gif)
-
-### Screenshot
+![demo](docs/demo_img2.png)
 ![screenshot](docs/demo_img.png)
 
 ---
