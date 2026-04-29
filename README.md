@@ -1,6 +1,6 @@
 # 🎴 Discord Card Game Bot
 
-A Discord bot that allows players to play card-based games directly inside a server.
+A Discord bot that allows players to play card-based games directly inside a discord server.
 
 ---
 
