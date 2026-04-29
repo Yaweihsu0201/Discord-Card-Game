@@ -1,6 +1,6 @@
 # 🎴 Discord Card Game Bot
 
-A Discord bot that allows players to play card-based games directly inside a discord server.
+A Discord bot that allows players to play card-based collection game directly inside a discord server.
 
 ---
 
@@ -34,72 +34,6 @@ A Discord bot that allows players to play card-based games directly inside a dis
 | `?size` | Check deck size |
 | `?clear` | Clear messages |
 | `?help` | Show help |
-
----
-
-## 🛠 Tech Stack
-
-- Node.js
-- Discord.js
-- JavaScript
-
----
-
-## ⚙️ Installation
-
-```bash
-npm install
-```
-
-### Setup
-
-Create a `.env` file:
-
-```env
-KEY=YOUR_DISCORD_BOT_TOKEN
-```
-
-Prepare card decks:
-
-```txt
-decks/
-├── ExtraDirty
-├── HappyHour
-├── LastCall
-├── OnTheRocks
-└── WithATwist
-```
-
-Run the bot:
-
-```bash
-npm run start
-```
-
----
-
-## 🚀 Quick Start
-
-```bash
-git clone https://github.com/Yaweihsu0201/Discord-Card-Game
-cd Discord-Card-Game
-npm install
-npm run start
-```
-
----
-
-## 📁 Project Structure
-
-```txt
-.
-├── decks/
-├── docs/
-├── index.js
-├── Game.js
-├── Decks.js
-└── Admin.js
-```
 
 ---
 
