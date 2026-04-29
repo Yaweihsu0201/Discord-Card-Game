@@ -24,15 +24,61 @@ A Discord bot that allows players to play card-based collection game directly in
 
 ## 📜 Commands
 
+## 📜 Commands
+
+### 🎴 Card / Gacha
+
 | Command | Description |
 |--------|------------|
-| `?start` | Start a new game |
-| `?draw` | Draw a card |
-| `?reset` | Reset the game |
-| `?size` | Check deck size |
-| `?clear` | Clear messages |
-| `?help` | Show help |
+| `!daily` | Claim daily free pull |
+| `!drop <package>` | Open a card pack (`basic`, `exclusive`, `premium`) |
+| `!shop` | View available card packages |
+| `!sell <card_id> <amount>` | Sell cards for money |
 
+---
+
+### 🎒 Inventory
+
+| Command | Description |
+|--------|------------|
+| `!collection` | Show your card collection (image + web viewer) |
+| `!list` | List all your cards, balance, and remaining pulls |
+
+---
+
+### 💰 Economy
+
+| Command | Description |
+|--------|------------|
+| `!daily` | Limited free pulls per day |
+| `!drop <package>` | Spend money to open packs |
+
+---
+
+### 🎮 Games
+
+| Command | Description |
+|--------|------------|
+| `/blackjack` | Play Blackjack |
+| `/blackjack_invite` | Invite another player |
+
+---
+
+### 🛠 Admin
+
+| Command | Description |
+|--------|------------|
+| `!add @user <amount>` | Add money to a user (Admin only) |
+
+---
+
+### 🧪 Misc
+
+| Command | Description |
+|--------|------------|
+| `!hi` | Test command |
+| `!pull` | Show basic instructions |
+| `!help` | Show help menu |
 ---
 
 ## 🎯 Future Improvements
