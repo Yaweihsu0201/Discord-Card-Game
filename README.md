@@ -10,7 +10,7 @@ A Discord bot that allows players to play card-based games directly inside a ser
 ![demo](docs/demo.gif)
 
 ### Screenshot
-![screenshot](docs/preview.png)
+![screenshot](docs/demo_img.png)
 
 ---
 
